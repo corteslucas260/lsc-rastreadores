@@ -1161,12 +1161,24 @@
                         <span class="muted">${user.email || ""}</span>
                       </td>
 
-                      <td>
-                        ${user.role !== "admin"
-                          ? `<button class="btn-danger btn-small" onclick="deleteUser(${user.id})">Excluir</button>`
-                          : `Administrador`
-                        }
-                      </td>
+                     <td>
+  ${user.role !== "admin"
+    ? `
+      <button class="btn-secondary btn-small" onclick="editUserPassword(${user.id})">
+        Editar Senha
+      </button>
+
+      <button class="btn-yellow btn-small" onclick="editUserData(${user.id})">
+        Editar Dados
+      </button>
+
+      <button class="btn-danger btn-small" onclick="deleteUser(${user.id})">
+        Excluir
+      </button>
+    `
+    : `Administrador`
+  }
+</td>
                     </tr>
                   `).join("")}
                 </tbody>
@@ -2160,7 +2172,94 @@
       saveData(data);
       renderDashboard();
     }
+function editUserPassword(id) {
+  const data = getData();
 
+  const user = data.users.find(u => u.id === id);
+
+  if (!user) {
+    alert("Usuário não encontrado.");
+    return;
+  }
+
+  const newPassword = prompt(
+    `Digite a nova senha para o login: ${user.username}`
+  );
+
+  if (!newPassword || !newPassword.trim()) {
+    alert("Alteração cancelada.");
+    return;
+  }
+
+  user.password = newPassword.trim();
+
+  saveData(data);
+
+  alert(`Senha do usuário ${user.username} alterada com sucesso!`);
+
+  renderUsers();
+}
+
+function editUserData(id) {
+  const data = getData();
+
+  const user = data.users.find(u => u.id === id);
+
+  if (!user) {
+    alert("Usuário não encontrado.");
+    return;
+  }
+
+  const newName = prompt("Nome do cliente:", user.name || "");
+  if (newName === null) return;
+
+  const newUsername = prompt("Login do cliente:", user.username || "");
+  if (newUsername === null) return;
+
+  const newPhone = prompt("WhatsApp:", user.phone || "");
+  if (newPhone === null) return;
+
+  const newEmail = prompt("E-mail:", user.email || "");
+  if (newEmail === null) return;
+
+  const newDocument = prompt("CPF/CNPJ:", user.document || "");
+  if (newDocument === null) return;
+
+  const newPlan = prompt("Plano: Básico, Plus ou Premium", user.plan || "Premium");
+  if (newPlan === null) return;
+
+  const newStatus = prompt("Status: ativo, em aberto, vencido ou bloqueado", user.contractStatus || "ativo");
+  if (newStatus === null) return;
+
+  if (!newName.trim() || !newUsername.trim()) {
+    alert("Nome e login não podem ficar vazios.");
+    return;
+  }
+
+  const usernameExists = data.users.some(u =>
+    u.id !== id &&
+    u.username.toLowerCase() === newUsername.trim().toLowerCase()
+  );
+
+  if (usernameExists) {
+    alert("Esse login já está sendo usado por outro cliente.");
+    return;
+  }
+
+  user.name = newName.trim();
+  user.username = newUsername.trim();
+  user.phone = newPhone.trim();
+  user.email = newEmail.trim();
+  user.document = newDocument.trim();
+  user.plan = newPlan.trim();
+  user.contractStatus = newStatus.trim();
+
+  saveData(data);
+
+  alert("Dados do cliente atualizados com sucesso!");
+
+  renderUsers();
+}
     window.onload = function() {
       const savedUser = localStorage.getItem("lsc_current_user_v2");
 
