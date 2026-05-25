@@ -3,19 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1.0">
-  <title>LSC Rastreador Pro</title>
+  <title>LSC Rastreador PRO V2</title>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 
   <style>
     * {
       box-sizing: border-box;
-      font-family: Inter, Arial, sans-serif;
+      font-family: Inter, Arial, Helvetica, sans-serif;
     }
 
     body {
       margin: 0;
-      background: #07111f;
+      background: #020617;
       color: #f8fafc;
     }
 
@@ -24,18 +24,34 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
-      background: radial-gradient(circle at top, #164e63, #020617 55%);
+      padding: 22px;
+      background:
+        radial-gradient(circle at top left, rgba(14, 165, 233, .35), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(34, 197, 94, .22), transparent 35%),
+        #020617;
     }
 
     .login-card {
       width: 100%;
-      max-width: 420px;
+      max-width: 430px;
       background: rgba(15, 23, 42, .96);
       border: 1px solid #334155;
-      border-radius: 24px;
+      border-radius: 28px;
       padding: 34px;
-      box-shadow: 0 25px 70px rgba(0,0,0,.55);
+      box-shadow: 0 30px 90px rgba(0,0,0,.65);
+    }
+
+    .logo {
+      width: 78px;
+      height: 78px;
+      border-radius: 24px;
+      margin: 0 auto 14px;
+      background: linear-gradient(135deg, #38bdf8, #22c55e);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      box-shadow: 0 15px 45px rgba(56,189,248,.25);
     }
 
     .brand {
@@ -43,22 +59,10 @@
       margin-bottom: 26px;
     }
 
-    .logo {
-      width: 74px;
-      height: 74px;
-      border-radius: 22px;
-      margin: 0 auto 14px;
-      background: linear-gradient(135deg, #38bdf8, #22c55e);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 34px;
-    }
-
     .brand h1 {
       margin: 0;
       color: #e0f2fe;
-      font-size: 31px;
+      font-size: 32px;
       letter-spacing: 1px;
     }
 
@@ -75,7 +79,7 @@
       margin-bottom: 6px;
     }
 
-    input, select {
+    input, select, textarea {
       width: 100%;
       padding: 13px;
       border-radius: 12px;
@@ -86,7 +90,12 @@
       margin-bottom: 14px;
     }
 
-    input:focus, select:focus {
+    textarea {
+      min-height: 90px;
+      resize: vertical;
+    }
+
+    input:focus, select:focus, textarea:focus {
       border-color: #38bdf8;
       box-shadow: 0 0 0 3px rgba(56,189,248,.12);
     }
@@ -100,9 +109,12 @@
     }
 
     .btn-primary {
-      width: 100%;
       background: linear-gradient(135deg, #0ea5e9, #2563eb);
       color: white;
+    }
+
+    .btn-primary.full {
+      width: 100%;
     }
 
     .btn-danger {
@@ -118,6 +130,11 @@
     .btn-green {
       background: #22c55e !important;
       color: white;
+    }
+
+    .btn-yellow {
+      background: #eab308;
+      color: #111827;
     }
 
     .btn-small {
@@ -137,8 +154,8 @@
     }
 
     header {
-      min-height: 72px;
-      background: rgba(2, 6, 23, .94);
+      min-height: 74px;
+      background: rgba(2, 6, 23, .96);
       border-bottom: 1px solid #1e293b;
       display: flex;
       justify-content: space-between;
@@ -147,6 +164,7 @@
       position: sticky;
       top: 0;
       z-index: 999;
+      backdrop-filter: blur(10px);
     }
 
     header h2 {
@@ -156,8 +174,8 @@
 
     .layout {
       display: grid;
-      grid-template-columns: 292px 1fr;
-      min-height: calc(100vh - 72px);
+      grid-template-columns: 300px 1fr;
+      min-height: calc(100vh - 74px);
     }
 
     aside {
@@ -183,6 +201,8 @@
       color: #64748b;
       text-transform: uppercase;
       margin: 14px 0 10px;
+      font-weight: bold;
+      letter-spacing: .8px;
     }
 
     main {
@@ -199,7 +219,7 @@
     }
 
     .search {
-      max-width: 360px;
+      max-width: 390px;
       margin: 0;
     }
 
@@ -210,16 +230,23 @@
       margin-bottom: 20px;
     }
 
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
     .card {
       background: linear-gradient(180deg, #111827, #0f172a);
       border: 1px solid #334155;
-      border-radius: 20px;
+      border-radius: 22px;
       padding: 20px;
       box-shadow: 0 15px 35px rgba(0,0,0,.22);
     }
 
     .card h3 {
-      margin: 0 0 12px;
+      margin: 0 0 14px;
       color: #7dd3fc;
     }
 
@@ -244,6 +271,29 @@
       font-size: 12px;
     }
 
+    .muted {
+      color: #94a3b8;
+      font-size: 13px;
+    }
+
+    .alert-box {
+      background: #082f49;
+      border: 1px solid #0ea5e9;
+      padding: 13px;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      color: #e0f2fe;
+    }
+
+    .warning-box {
+      background: #451a03;
+      border: 1px solid #f59e0b;
+      padding: 13px;
+      border-radius: 14px;
+      margin-bottom: 15px;
+      color: #fef3c7;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -258,11 +308,16 @@
       padding: 12px;
       text-align: left;
       font-size: 14px;
+      vertical-align: top;
     }
 
     th {
       background: #1e293b;
       color: #93c5fd;
+    }
+
+    .table-wrap {
+      overflow-x: auto;
     }
 
     .status-on {
@@ -275,9 +330,19 @@
       font-weight: bold;
     }
 
+    .status-moving {
+      color: #38bdf8;
+      font-weight: bold;
+    }
+
+    .status-stopped {
+      color: #facc15;
+      font-weight: bold;
+    }
+
     #map {
       width: 100%;
-      height: 480px;
+      height: 500px;
       border-radius: 18px;
       border: 1px solid #334155;
       overflow: hidden;
@@ -299,31 +364,44 @@
       color: #facc15;
     }
 
-    .muted {
-      color: #94a3b8;
-      font-size: 13px;
-    }
-
-    .alert-box {
-      background: #082f49;
-      border: 1px solid #0ea5e9;
-      padding: 13px;
-      border-radius: 14px;
-      margin-bottom: 15px;
-      color: #e0f2fe;
-    }
-
     .actions {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
+      align-content: flex-start;
+      justify-content: flex-end;
     }
 
-    .table-wrap {
-      overflow-x: auto;
+    .inline-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 12px;
     }
 
-    @media(max-width: 850px) {
+    .route-controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .route-controls select {
+      max-width: 260px;
+      margin-bottom: 0;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 8px;
+      background: #172554;
+      border: 1px solid #1d4ed8;
+      color: #bfdbfe;
+      font-size: 12px;
+    }
+
+    @media(max-width: 900px) {
       .layout {
         grid-template-columns: 1fr;
       }
@@ -336,10 +414,15 @@
       header {
         flex-direction: column;
         gap: 8px;
+        align-items: flex-start;
       }
 
       .vehicle-card {
         grid-template-columns: 1fr;
+      }
+
+      .actions {
+        justify-content: flex-start;
       }
     }
   </style>
@@ -351,7 +434,7 @@
       <div class="brand">
         <div class="logo">📡</div>
         <h1>LSC RASTREADOR</h1>
-        <p>Central inteligente de monitoramento veicular</p>
+        <p>Rastreamento, rotas, abastecimento e gestão de frota</p>
       </div>
 
       <label>Usuário</label>
@@ -360,7 +443,7 @@
       <label>Senha</label>
       <input type="password" id="loginPass" placeholder="Digite sua senha">
 
-      <button class="btn-primary" onclick="login()">Acessar Sistema</button>
+      <button class="btn-primary full" onclick="login()">Acessar Sistema</button>
 
       <div id="loginError" class="error"></div>
 
@@ -373,8 +456,8 @@
   <section id="app" class="app">
     <header>
       <div>
-        <h2>📡 LSC RASTREADOR</h2>
-        <span class="muted">Painel operacional de rastreamento</span>
+        <h2>📡 LSC RASTREADOR PRO V2</h2>
+        <span class="muted">Painel operacional de rastreamento e gestão de frota</span>
       </div>
 
       <div>
@@ -398,11 +481,46 @@
     let currentUser = null;
     let map = null;
     let markers = [];
+    let routeLayer = null;
+    let routeMarkers = [];
     let watchId = null;
+    let routeTimer = null;
     let searchTerm = "";
+    let selectedRouteVehicleId = null;
+    let selectedRoutePeriod = 300;
 
-    function getData() {
-      const data = localStorage.getItem("lsc_rastreador_data");
+    const routePeriods = [
+      { label: "Últimos 5 minutos", seconds: 300 },
+      { label: "Últimos 10 minutos", seconds: 600 },
+      { label: "Últimos 30 minutos", seconds: 1800 },
+      { label: "Última 1 hora", seconds: 3600 },
+      { label: "Últimas 3 horas", seconds: 10800 },
+      { label: "Últimas 5 horas", seconds: 18000 },
+      { label: "Últimas 10 horas", seconds: 36000 },
+      { label: "Último 1 dia", seconds: 86400 },
+      { label: "Últimos 7 dias", seconds: 604800 },
+      { label: "Últimos 15 dias", seconds: 1296000 },
+      { label: "Últimos 30 dias", seconds: 2592000 },
+      { label: "Últimos 90 dias", seconds: 7776000 },
+      { label: "Últimos 180 dias", seconds: 15552000 },
+      { label: "Últimos 360 dias", seconds: 31104000 }
+    ];
+
+    function money(value) {
+      return Number(value || 0).toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "BRL"
+      });
+    }
+
+    function formatNumber(value, decimals = 2) {
+      return Number(value || 0).toLocaleString("pt-BR", {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+        function getData() {
+      const data = localStorage.getItem("lsc_rastreador_pro_v2");
 
       if (data) {
         return JSON.parse(data);
@@ -415,31 +533,64 @@
             name: "Administrador",
             username: "admin",
             password: "admin",
-            role: "admin"
+            role: "admin",
+            phone: "",
+            email: "",
+            document: "",
+            address: "",
+            plan: "Premium",
+            dueDate: "",
+            contractStatus: "ativo"
           }
         ],
+
         vehicles: [
           {
             id: 1,
             ownerId: null,
             plate: "ABC-1234",
             model: "Hilux",
+            year: "2023",
+            color: "Prata",
+            chassis: "",
+            renavam: "",
             imei: "869999999999999",
+            chip: "",
+            carrier: "",
             lat: -8.7619,
             lng: -63.9039,
             speed: 42,
             status: "online",
-            updatedAt: new Date().toLocaleString("pt-BR")
+            trackerStatus: "ativo",
+            odometer: 128550,
+            notes: "Veículo de teste",
+            updatedAt: new Date().toISOString()
           }
-        ]
+        ],
+
+        routes: [
+          {
+            id: Date.now(),
+            vehicleId: 1,
+            lat: -8.7619,
+            lng: -63.9039,
+            speed: 42,
+            timestamp: new Date().toISOString()
+          }
+        ],
+
+        fuelRecords: [],
+        maintenanceRecords: [],
+        alerts: [],
+        payments: []
       };
 
-      localStorage.setItem("lsc_rastreador_data", JSON.stringify(initialData));
+      localStorage.setItem("lsc_rastreador_pro_v2", JSON.stringify(initialData));
       return initialData;
     }
 
     function saveData(data) {
-      localStorage.setItem("lsc_rastreador_data", JSON.stringify(data));
+      localStorage.setItem("lsc_rastreador_pro_v2", JSON.stringify(data));
     }
 
     function login() {
@@ -460,7 +611,7 @@
 
       currentUser = user;
 
-      localStorage.setItem("lsc_current_user", JSON.stringify(user));
+      localStorage.setItem("lsc_current_user_v2", JSON.stringify(user));
 
       document.getElementById("loginPage").style.display = "none";
       document.getElementById("app").style.display = "block";
@@ -477,23 +628,35 @@
         navigator.geolocation.clearWatch(watchId);
       }
 
-      localStorage.removeItem("lsc_current_user");
+      if (routeTimer !== null) {
+        clearInterval(routeTimer);
+      }
+
+      localStorage.removeItem("lsc_current_user_v2");
       location.reload();
     }
-        function renderMenu() {
+
+    function renderMenu() {
       const menu = document.getElementById("menu");
 
       if (currentUser.role === "admin") {
         menu.innerHTML = `
-          <div class="side-title">Navegação</div>
-          <button onclick="renderDashboard()">📍 Mapa Geral</button>
+          <div class="side-title">Rastreamento</div>
+          <button onclick="renderDashboard()">📍 Dashboard Geral</button>
           <button class="btn-green" onclick="rastrearMeuCelular()">📱 Rastrear Meu Celular</button>
           <button onclick="pararRastreamentoCelular()">🛑 Parar Rastreamento</button>
 
-          <div class="side-title">Administração</div>
-          <button onclick="renderUsers()">👤 Gerenciar Usuários</button>
-          <button onclick="renderVehicles()">🚗 Gerenciar Veículos</button>
-          <button onclick="limparTeste()">🧹 Limpar Testes</button>
+          <div class="side-title">Gestão</div>
+          <button onclick="renderUsers()">👤 Clientes / Usuários</button>
+          <button onclick="renderVehicles()">🚗 Veículos</button>
+          <button onclick="renderFuel()">⛽ Abastecimento</button>
+          <button onclick="renderMaintenance()">🔧 Manutenção</button>
+          <button onclick="renderFinance()">💰 Financeiro</button>
+
+          <div class="side-title">Sistema</div>
+          <button onclick="renderReports()">📊 Relatórios</button>
+          <button onclick="renderAlerts()">⚠️ Alertas</button>
+          <button onclick="limparTestes()">🧹 Limpar Testes</button>
         `;
       } else {
         menu.innerHTML = `
@@ -501,11 +664,17 @@
           <button onclick="renderDashboard()">📍 Meus Veículos</button>
           <button class="btn-green" onclick="rastrearMeuCelular()">📱 Rastrear Meu Celular</button>
           <button onclick="pararRastreamentoCelular()">🛑 Parar Rastreamento</button>
+
+          <div class="side-title">Meus Dados</div>
+          <button onclick="renderFuel()">⛽ Meus Abastecimentos</button>
+          <button onclick="renderMaintenance()">🔧 Minhas Manutenções</button>
+          <button onclick="renderFinance()">💰 Meu Plano</button>
+          <button onclick="renderReports()">📊 Meus Relatórios</button>
         `;
       }
     }
 
-    function getVehiclesByAccess() {
+    function getAccessibleVehicles() {
       const data = getData();
 
       let vehicles = currentUser.role === "admin"
@@ -514,7 +683,7 @@
 
       if (searchTerm) {
         vehicles = vehicles.filter(v =>
-          (v.plate + v.model + v.imei)
+          `${v.plate} ${v.model} ${v.imei} ${v.chip || ""}`
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
         );
@@ -523,35 +692,125 @@
       return vehicles;
     }
 
+    function getVehicleOwnerName(vehicle) {
+      const data = getData();
+
+      if (!vehicle.ownerId) {
+        return "Sem cliente";
+      }
+
+      const owner = data.users.find(u => u.id === vehicle.ownerId);
+
+      return owner ? owner.name : "Cliente não encontrado";
+    }
+
+    function relativeTime(dateString) {
+      if (!dateString) return "Sem atualização";
+
+      const diff = Math.floor((Date.now() - new Date(dateString).getTime()) / 1000);
+
+      if (diff < 10) return "agora";
+      if (diff < 60) return `há ${diff} segundos`;
+      if (diff < 3600) return `há ${Math.floor(diff / 60)} minutos`;
+      if (diff < 86400) return `há ${Math.floor(diff / 3600)} horas`;
+
+      return `há ${Math.floor(diff / 86400)} dias`;
+    }
+
+    function vehicleStatusText(vehicle) {
+      if (vehicle.status === "offline") {
+        return `<span class="status-off">OFFLINE</span>`;
+      }
+
+      if ((vehicle.speed || 0) > 5) {
+        return `<span class="status-moving">EM MOVIMENTO</span>`;
+      }
+
+      return `<span class="status-stopped">PARADO</span>`;
+    }
+
+    function getRoutePoints(vehicleId, periodSeconds) {
+      const data = getData();
+      const minTime = Date.now() - (periodSeconds * 1000);
+
+      return data.routes
+        .filter(r =>
+          r.vehicleId === vehicleId &&
+          new Date(r.timestamp).getTime() >= minTime
+        )
+        .sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+    }
+
+    function addRoutePoint(vehicle) {
+      const data = getData();
+
+      data.routes.push({
+        id: Date.now() + Math.random(),
+        vehicleId: vehicle.id,
+        lat: vehicle.lat,
+        lng: vehicle.lng,
+        speed: vehicle.speed || 0,
+        timestamp: new Date().toISOString()
+      });
+
+      const maxTime = Date.now() - (370 * 24 * 60 * 60 * 1000);
+
+      data.routes = data.routes.filter(r =>
+        new Date(r.timestamp).getTime() >= maxTime
+      );
+
+      saveData(data);
+    }
+
     function renderDashboard() {
-      const vehicles = getVehiclesByAccess();
-      const dashboard = document.getElementById("dashboard");
+      const data = getData();
+      const vehicles = getAccessibleVehicles();
 
       const online = vehicles.filter(v => v.status === "online").length;
       const offline = vehicles.filter(v => v.status === "offline").length;
+
+      const moving = vehicles.filter(v =>
+        v.status === "online" && Number(v.speed || 0) > 5
+      ).length;
+
+      const stopped = vehicles.filter(v =>
+        v.status === "online" && Number(v.speed || 0) <= 5
+      ).length;
+
       const averageSpeed = vehicles.length
-        ? Math.round(vehicles.reduce((total, v) => total + (v.speed || 0), 0) / vehicles.length)
+        ? Math.round(vehicles.reduce((total, v) => total + Number(v.speed || 0), 0) / vehicles.length)
         : 0;
+
+      const accessibleIds = vehicles.map(v => v.id);
+
+      const fuelRecords = data.fuelRecords.filter(f =>
+        accessibleIds.includes(Number(f.vehicleId))
+      );
+
+      const totalFuelCost = fuelRecords.reduce((sum, f) => sum + Number(f.total || 0), 0);
+      const totalLiters = fuelRecords.reduce((sum, f) => sum + Number(f.liters || 0), 0);
+
+      const dashboard = document.getElementById("dashboard");
 
       dashboard.innerHTML = `
         <div class="topbar">
           <div>
-            <h1 style="margin:0">Dashboard</h1>
-            <span class="muted">Monitoramento em tempo real e controle de frota</span>
+            <h1 style="margin:0">Dashboard PRO V2</h1>
+            <span class="muted">Rastreamento, rotas, abastecimento, frota e financeiro</span>
           </div>
 
           <input
             class="search"
             id="searchInput"
-            placeholder="Buscar placa, modelo ou IMEI"
+            placeholder="Buscar placa, modelo, IMEI ou chip"
             value="${searchTerm}"
             oninput="searchTerm=this.value;renderDashboard()"
           >
         </div>
 
-        <div class="alert-box">
-          Para testar com celular real, abra este site no celular, faça login e clique em
-          <b>📱 Rastrear Meu Celular</b>. O navegador vai pedir permissão de localização.
+        <div class="warning-box">
+          Esta versão usa armazenamento local do navegador para teste. Para uso real com vários clientes,
+          histórico longo e acesso em nuvem, será necessário banco de dados e servidor.
         </div>
 
         <div class="grid">
@@ -574,14 +833,41 @@
           </div>
 
           <div class="card metric">
+            <span class="pill">🏁 Movimento</span>
+            <h1>${moving}</h1>
+            <p class="muted">${stopped} parado(s)</p>
+          </div>
+
+          <div class="card metric">
             <span class="pill">⚡ Velocidade média</span>
             <h1>${averageSpeed}</h1>
             <p class="muted">km/h</p>
+          </div>
+
+          <div class="card metric">
+            <span class="pill">⛽ Combustível</span>
+            <h1>${money(totalFuelCost)}</h1>
+            <p class="muted">${formatNumber(totalLiters)} litros registrados</p>
           </div>
         </div>
 
         <div class="card">
           <h3>Mapa de Rastreamento</h3>
+
+          <div class="route-controls">
+            <select id="routePeriod" onchange="selectedRoutePeriod=Number(this.value); if(selectedRouteVehicleId) showRoute(selectedRouteVehicleId)">
+              ${routePeriods.map(p => `
+                <option value="${p.seconds}" ${p.seconds === selectedRoutePeriod ? "selected" : ""}>
+                  ${p.label}
+                </option>
+              `).join("")}
+            </select>
+
+            <button class="btn-secondary btn-small" onclick="clearRoute()">
+              Limpar rota do mapa
+            </button>
+          </div>
+
           <div id="map"></div>
         </div>
 
@@ -608,6 +894,8 @@
         }).addTo(map);
 
         markers = [];
+        routeMarkers = [];
+        routeLayer = null;
 
         vehicles.forEach(vehicle => {
           const marker = L.marker([vehicle.lat, vehicle.lng]).addTo(map);
@@ -615,9 +903,10 @@
           marker.bindPopup(`
             <b>${vehicle.plate}</b><br>
             Modelo: ${vehicle.model}<br>
-            Velocidade: ${vehicle.speed} km/h<br>
+            Cliente: ${getVehicleOwnerName(vehicle)}<br>
             Status: ${vehicle.status}<br>
-            Atualizado: ${vehicle.updatedAt}
+            Velocidade: ${vehicle.speed || 0} km/h<br>
+            Atualizado: ${relativeTime(vehicle.updatedAt)}
           `);
 
           markers.push(marker);
@@ -627,7 +916,94 @@
           const group = new L.featureGroup(markers);
           map.fitBounds(group.getBounds().pad(0.2));
         }
+
+        if (selectedRouteVehicleId) {
+          showRoute(selectedRouteVehicleId, false);
+        }
       }, 100);
+    }
+        function clearRoute() {
+      selectedRouteVehicleId = null;
+
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+        routeLayer = null;
+      }
+
+      routeMarkers.forEach(marker => map.removeLayer(marker));
+      routeMarkers = [];
+    }
+
+    function showRoute(vehicleId, center = true) {
+      selectedRouteVehicleId = Number(vehicleId);
+
+      if (!map) return;
+
+      if (routeLayer) {
+        map.removeLayer(routeLayer);
+        routeLayer = null;
+      }
+
+      routeMarkers.forEach(marker => map.removeLayer(marker));
+      routeMarkers = [];
+
+      const points = getRoutePoints(selectedRouteVehicleId, selectedRoutePeriod);
+
+      if (points.length === 0) {
+        alert("Nenhum ponto de rota encontrado para o período selecionado.");
+        return;
+      }
+
+      const latlngs = points.map(p => [p.lat, p.lng]);
+
+      routeLayer = L.polyline(latlngs, {
+        color: "#38bdf8",
+        weight: 5,
+        opacity: 0.85
+      }).addTo(map);
+
+      const firstPoint = points[0];
+      const lastPoint = points[points.length - 1];
+
+      const startMarker = L.marker([firstPoint.lat, firstPoint.lng]).addTo(map);
+      startMarker.bindPopup(`
+        <b>Início da rota</b><br>
+        Horário: ${new Date(firstPoint.timestamp).toLocaleString("pt-BR")}<br>
+        Velocidade: ${firstPoint.speed || 0} km/h
+      `);
+
+      const endMarker = L.marker([lastPoint.lat, lastPoint.lng]).addTo(map);
+      endMarker.bindPopup(`
+        <b>Fim da rota</b><br>
+        Horário: ${new Date(lastPoint.timestamp).toLocaleString("pt-BR")}<br>
+        Velocidade: ${lastPoint.speed || 0} km/h
+      `);
+
+      routeMarkers.push(startMarker, endMarker);
+
+      points.forEach((p, index) => {
+        if (index % 5 === 0 && index !== 0 && index !== points.length - 1) {
+          const pointMarker = L.circleMarker([p.lat, p.lng], {
+            radius: 4,
+            color: "#facc15",
+            fillColor: "#facc15",
+            fillOpacity: 0.7
+          }).addTo(map);
+
+          pointMarker.bindPopup(`
+            <b>Ponto da rota</b><br>
+            Horário: ${new Date(p.timestamp).toLocaleString("pt-BR")}<br>
+            Velocidade: ${p.speed || 0} km/h
+          `);
+
+          routeMarkers.push(pointMarker);
+        }
+      });
+
+      if (center) {
+        const group = new L.featureGroup([routeLayer, ...routeMarkers]);
+        map.fitBounds(group.getBounds().pad(0.2));
+      }
     }
 
     function centerVehicle(id) {
@@ -636,13 +1012,9 @@
 
       if (!vehicle) return;
 
-      renderDashboard();
-
-      setTimeout(() => {
-        if (map) {
-          map.setView([vehicle.lat, vehicle.lng], 17);
-        }
-      }, 250);
+      if (map) {
+        map.setView([vehicle.lat, vehicle.lng], 17);
+      }
     }
 
     function renderVehicleList(vehicles) {
@@ -657,20 +1029,26 @@
         <div class="vehicle-card">
           <div>
             <h4>${v.plate} - ${v.model}</h4>
+            <p><span class="badge">${getVehicleOwnerName(v)}</span></p>
+            <p>Status: ${vehicleStatusText(v)}</p>
+            <p>Velocidade: ${v.speed || 0} km/h</p>
+            <p>KM atual: ${Number(v.odometer || 0).toLocaleString("pt-BR")} km</p>
             <p>IMEI: ${v.imei}</p>
-            <p>Velocidade: ${v.speed} km/h</p>
             <p>Latitude: ${v.lat} | Longitude: ${v.lng}</p>
-            <p>Status:
-              <span class="${v.status === "online" ? "status-on" : "status-off"}">
-                ${v.status.toUpperCase()}
-              </span>
-            </p>
-            <p class="muted">Última atualização: ${v.updatedAt}</p>
+            <p class="muted">Atualizado: ${relativeTime(v.updatedAt)}</p>
           </div>
 
           <div class="actions">
             <button class="btn-secondary btn-small" onclick="centerVehicle(${v.id})">
               Centralizar
+            </button>
+
+            <button class="btn-primary btn-small" onclick="showRoute(${v.id})">
+              Ver rota
+            </button>
+
+            <button class="btn-yellow btn-small" onclick="simulateVehicle(${v.id})">
+              Simular
             </button>
           </div>
         </div>
@@ -681,52 +1059,119 @@
       const data = getData();
       const dashboard = document.getElementById("dashboard");
 
+      if (currentUser.role !== "admin") {
+        dashboard.innerHTML = `
+          <div class="card">
+            <h3>Meu Perfil</h3>
+            <p>Nome: ${currentUser.name}</p>
+            <p>Usuário: ${currentUser.username}</p>
+            <p>Plano: ${currentUser.plan || "Não informado"}</p>
+            <p>Status: ${currentUser.contractStatus || "ativo"}</p>
+          </div>
+        `;
+        return;
+      }
+
       dashboard.innerHTML = `
-        <div class="card">
-          <h3>Criar Novo Usuário</h3>
-
-          <label>Nome do Cliente</label>
-          <input id="newName" placeholder="Ex: João da Silva">
-
-          <label>Usuário de Login</label>
-          <input id="newUsername" placeholder="Ex: joao">
-
-          <label>Senha</label>
-          <input id="newPassword" placeholder="Ex: 123456">
-
-          <button class="btn-primary" onclick="createUser()">Criar Usuário</button>
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Clientes e Usuários</h1>
+            <span class="muted">Cadastro completo de clientes do rastreamento</span>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Usuários Cadastrados</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Criar Novo Cliente</h3>
 
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Nome</th>
-                  <th>Usuário</th>
-                  <th>Perfil</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
+            <label>Nome do Cliente</label>
+            <input id="newName" placeholder="Ex: João da Silva">
 
-              <tbody>
-                ${data.users.map(user => `
+            <label>CPF/CNPJ</label>
+            <input id="newDocument" placeholder="CPF ou CNPJ">
+
+            <label>WhatsApp</label>
+            <input id="newPhone" placeholder="Ex: 69 99999-9999">
+
+            <label>E-mail</label>
+            <input id="newEmail" placeholder="cliente@email.com">
+
+            <label>Endereço</label>
+            <input id="newAddress" placeholder="Endereço completo">
+
+            <label>Usuário de Login</label>
+            <input id="newUsername" placeholder="Ex: joao">
+
+            <label>Senha</label>
+            <input id="newPassword" placeholder="Ex: 123456">
+
+            <label>Plano</label>
+            <select id="newPlan">
+              <option value="Básico">Básico - localização</option>
+              <option value="Plus">Plus - localização + rotas</option>
+              <option value="Premium">Premium - rotas + alertas + relatórios</option>
+            </select>
+
+            <label>Vencimento</label>
+            <input id="newDueDate" type="date">
+
+            <label>Status do Contrato</label>
+            <select id="newContractStatus">
+              <option value="ativo">Ativo</option>
+              <option value="em aberto">Em aberto</option>
+              <option value="vencido">Vencido</option>
+              <option value="bloqueado">Bloqueado</option>
+            </select>
+
+            <button class="btn-primary full" onclick="createUser()">Criar Cliente</button>
+          </div>
+
+          <div class="card">
+            <h3>Clientes Cadastrados</h3>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
                   <tr>
-                    <td>${user.name}</td>
-                    <td>${user.username}</td>
-                    <td>${user.role}</td>
-                    <td>
-                      ${user.role !== "admin"
-                        ? `<button class="btn-danger btn-small" onclick="deleteUser(${user.id})">Excluir</button>`
-                        : `Administrador`
-                      }
-                    </td>
+                    <th>Cliente</th>
+                    <th>Login</th>
+                    <th>Plano</th>
+                    <th>Status</th>
+                    <th>Contato</th>
+                    <th>Ação</th>
                   </tr>
-                `).join("")}
-              </tbody>
-            </table>
+                </thead>
+
+                <tbody>
+                  ${data.users.map(user => `
+                    <tr>
+                      <td>
+                        <b>${user.name}</b><br>
+                        <span class="muted">${user.document || ""}</span>
+                      </td>
+
+                      <td>${user.username}</td>
+
+                      <td>${user.plan || "-"}</td>
+
+                      <td>${user.contractStatus || "ativo"}</td>
+
+                      <td>
+                        ${user.phone || "-"}<br>
+                        <span class="muted">${user.email || ""}</span>
+                      </td>
+
+                      <td>
+                        ${user.role !== "admin"
+                          ? `<button class="btn-danger btn-small" onclick="deleteUser(${user.id})">Excluir</button>`
+                          : `Administrador`
+                        }
+                      </td>
+                    </tr>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       `;
@@ -734,11 +1179,18 @@
 
     function createUser() {
       const name = document.getElementById("newName").value.trim();
+      const documentNumber = document.getElementById("newDocument").value.trim();
+      const phone = document.getElementById("newPhone").value.trim();
+      const email = document.getElementById("newEmail").value.trim();
+      const address = document.getElementById("newAddress").value.trim();
       const username = document.getElementById("newUsername").value.trim();
       const password = document.getElementById("newPassword").value.trim();
+      const plan = document.getElementById("newPlan").value;
+      const dueDate = document.getElementById("newDueDate").value;
+      const contractStatus = document.getElementById("newContractStatus").value;
 
       if (!name || !username || !password) {
-        alert("Preencha todos os campos.");
+        alert("Preencha nome, usuário e senha.");
         return;
       }
 
@@ -754,7 +1206,14 @@
         name,
         username,
         password,
-        role: "client"
+        role: "client",
+        phone,
+        email,
+        document: documentNumber,
+        address,
+        plan,
+        dueDate,
+        contractStatus
       });
 
       saveData(data);
@@ -762,7 +1221,7 @@
     }
 
     function deleteUser(id) {
-      if (!confirm("Deseja excluir este usuário?")) return;
+      if (!confirm("Deseja excluir este cliente?")) return;
 
       const data = getData();
 
@@ -785,84 +1244,151 @@
       const users = data.users.filter(u => u.role === "client");
       const dashboard = document.getElementById("dashboard");
 
+      if (currentUser.role !== "admin") {
+        renderDashboard();
+        return;
+      }
+
       dashboard.innerHTML = `
-        <div class="card">
-          <h3>Cadastrar Veículo</h3>
-
-          <label>Cliente Proprietário</label>
-          <select id="vehicleOwner">
-            <option value="">Selecione um cliente</option>
-            ${users.map(u => `<option value="${u.id}">${u.name} - ${u.username}</option>`).join("")}
-          </select>
-
-          <label>Placa</label>
-          <input id="vehiclePlate" placeholder="Ex: NCA-1234">
-
-          <label>Modelo</label>
-          <input id="vehicleModel" placeholder="Ex: Corolla, Hilux, Fazer 250">
-
-          <label>IMEI do Rastreador</label>
-          <input id="vehicleImei" placeholder="Ex: 869999999999999">
-
-          <label>Latitude</label>
-          <input id="vehicleLat" placeholder="Ex: -8.7619">
-
-          <label>Longitude</label>
-          <input id="vehicleLng" placeholder="Ex: -63.9039">
-
-          <label>Status</label>
-          <select id="vehicleStatus">
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-          </select>
-
-          <button class="btn-primary" onclick="createVehicle()">Cadastrar Veículo</button>
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Veículos</h1>
+            <span class="muted">Cadastro completo de veículos e rastreadores</span>
+          </div>
         </div>
 
-        <div class="card">
-          <h3>Veículos Cadastrados</h3>
+        <div class="grid-2">
+          <div class="card">
+            <h3>Cadastrar Veículo</h3>
 
-          <div class="table-wrap">
-            <table>
-              <thead>
-                <tr>
-                  <th>Placa</th>
-                  <th>Modelo</th>
-                  <th>Cliente</th>
-                  <th>Status</th>
-                  <th>Localização</th>
-                  <th>Ação</th>
-                </tr>
-              </thead>
+            <label>Cliente Proprietário</label>
+            <select id="vehicleOwner">
+              <option value="">Selecione um cliente</option>
+              ${users.map(u => `<option value="${u.id}">${u.name} - ${u.username}</option>`).join("")}
+            </select>
 
-              <tbody>
-                ${data.vehicles.map(v => {
-                  const owner = data.users.find(u => u.id === v.ownerId);
+            <div class="inline-row">
+              <div>
+                <label>Placa</label>
+                <input id="vehiclePlate" placeholder="Ex: NCA-1234">
+              </div>
 
-                  return `
+              <div>
+                <label>Modelo</label>
+                <input id="vehicleModel" placeholder="Ex: Hilux">
+              </div>
+            </div>
+
+            <div class="inline-row">
+              <div>
+                <label>Ano</label>
+                <input id="vehicleYear" placeholder="2024">
+              </div>
+
+              <div>
+                <label>Cor</label>
+                <input id="vehicleColor" placeholder="Branco">
+              </div>
+            </div>
+
+            <label>Chassi</label>
+            <input id="vehicleChassis" placeholder="Chassi">
+
+            <label>Renavam</label>
+            <input id="vehicleRenavam" placeholder="Renavam">
+
+            <label>IMEI do Rastreador</label>
+            <input id="vehicleImei" placeholder="Ex: 869999999999999">
+
+            <div class="inline-row">
+              <div>
+                <label>Chip</label>
+                <input id="vehicleChip" placeholder="Número do chip">
+              </div>
+
+              <div>
+                <label>Operadora</label>
+                <input id="vehicleCarrier" placeholder="Vivo, Claro, Tim">
+              </div>
+            </div>
+
+            <div class="inline-row">
+              <div>
+                <label>Latitude</label>
+                <input id="vehicleLat" placeholder="-8.7619">
+              </div>
+
+              <div>
+                <label>Longitude</label>
+                <input id="vehicleLng" placeholder="-63.9039">
+              </div>
+            </div>
+
+            <div class="inline-row">
+              <div>
+                <label>KM atual</label>
+                <input id="vehicleOdometer" placeholder="128550">
+              </div>
+
+              <div>
+                <label>Status</label>
+                <select id="vehicleStatus">
+                  <option value="online">Online</option>
+                  <option value="offline">Offline</option>
+                </select>
+              </div>
+            </div>
+
+            <label>Observações</label>
+            <textarea id="vehicleNotes" placeholder="Informações adicionais"></textarea>
+
+            <button class="btn-primary full" onclick="createVehicle()">Cadastrar Veículo</button>
+          </div>
+
+          <div class="card">
+            <h3>Veículos Cadastrados</h3>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Veículo</th>
+                    <th>Cliente</th>
+                    <th>Rastreador</th>
+                    <th>Status</th>
+                    <th>KM</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  ${data.vehicles.map(v => `
                     <tr>
-                      <td>${v.plate}</td>
-                      <td>${v.model}</td>
-                      <td>${owner ? owner.name : "Sem cliente"}</td>
                       <td>
-                        <span class="${v.status === "online" ? "status-on" : "status-off"}">
-                          ${v.status}
-                        </span>
+                        <b>${v.plate}</b><br>
+                        <span class="muted">${v.model} ${v.year || ""}</span>
                       </td>
-                      <td>${v.lat}, ${v.lng}</td>
+
+                      <td>${getVehicleOwnerName(v)}</td>
+
                       <td>
-                        <button class="btn-secondary btn-small" onclick="simulateVehicle(${v.id})">
-                          Simular
-                        </button>
-                        <button class="btn-danger btn-small" onclick="deleteVehicle(${v.id})">
-                          Excluir
-                        </button>
+                        IMEI: ${v.imei}<br>
+                        <span class="muted">Chip: ${v.chip || "-"}</span>
+                      </td>
+
+                      <td>${vehicleStatusText(v)}</td>
+
+                      <td>${Number(v.odometer || 0).toLocaleString("pt-BR")} km</td>
+
+                      <td>
+                        <button class="btn-yellow btn-small" onclick="simulateVehicle(${v.id})">Simular</button>
+                        <button class="btn-danger btn-small" onclick="deleteVehicle(${v.id})">Excluir</button>
                       </td>
                     </tr>
-                  `;
-                }).join("")}
-              </tbody>
-            </table>
+                  `).join("")}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       `;
@@ -872,41 +1398,71 @@
       const ownerId = Number(document.getElementById("vehicleOwner").value);
       const plate = document.getElementById("vehiclePlate").value.trim().toUpperCase();
       const model = document.getElementById("vehicleModel").value.trim();
+      const year = document.getElementById("vehicleYear").value.trim();
+      const color = document.getElementById("vehicleColor").value.trim();
+      const chassis = document.getElementById("vehicleChassis").value.trim();
+      const renavam = document.getElementById("vehicleRenavam").value.trim();
       const imei = document.getElementById("vehicleImei").value.trim();
+      const chip = document.getElementById("vehicleChip").value.trim();
+      const carrier = document.getElementById("vehicleCarrier").value.trim();
       const lat = Number(document.getElementById("vehicleLat").value);
       const lng = Number(document.getElementById("vehicleLng").value);
+      const odometer = Number(document.getElementById("vehicleOdometer").value);
       const status = document.getElementById("vehicleStatus").value;
+      const notes = document.getElementById("vehicleNotes").value.trim();
 
       if (!ownerId || !plate || !model || !imei || !lat || !lng) {
-        alert("Preencha todos os campos corretamente.");
+        alert("Preencha cliente, placa, modelo, IMEI, latitude e longitude.");
         return;
       }
 
       const data = getData();
 
-      data.vehicles.push({
+      const newVehicle = {
         id: Date.now(),
         ownerId,
         plate,
         model,
+        year,
+        color,
+        chassis,
+        renavam,
         imei,
+        chip,
+        carrier,
         lat,
         lng,
-        speed: Math.floor(Math.random() * 90),
+        speed: Math.floor(Math.random() * 80),
         status,
-        updatedAt: new Date().toLocaleString("pt-BR")
+        trackerStatus: "ativo",
+        odometer,
+        notes,
+        updatedAt: new Date().toISOString()
+      };
+
+      data.vehicles.push(newVehicle);
+
+      data.routes.push({
+        id: Date.now() + Math.random(),
+        vehicleId: newVehicle.id,
+        lat,
+        lng,
+        speed: newVehicle.speed,
+        timestamp: new Date().toISOString()
       });
 
       saveData(data);
       renderVehicles();
     }
-
-    function deleteVehicle(id) {
+        function deleteVehicle(id) {
       if (!confirm("Deseja excluir este veículo?")) return;
 
       const data = getData();
 
       data.vehicles = data.vehicles.filter(v => v.id !== id);
+      data.routes = data.routes.filter(r => r.vehicleId !== id);
+      data.fuelRecords = data.fuelRecords.filter(f => Number(f.vehicleId) !== id);
+      data.maintenanceRecords = data.maintenanceRecords.filter(m => Number(m.vehicleId) !== id);
 
       saveData(data);
       renderVehicles();
@@ -917,18 +1473,21 @@
 
       data.vehicles = data.vehicles.map(v => {
         if (v.id === id) {
-          v.lat = Number((v.lat + (Math.random() - 0.5) / 100).toFixed(6));
-          v.lng = Number((v.lng + (Math.random() - 0.5) / 100).toFixed(6));
+          v.lat = Number((v.lat + (Math.random() - 0.5) / 800).toFixed(6));
+          v.lng = Number((v.lng + (Math.random() - 0.5) / 800).toFixed(6));
           v.speed = Math.floor(Math.random() * 100);
-          v.status = Math.random() > 0.15 ? "online" : "offline";
-          v.updatedAt = new Date().toLocaleString("pt-BR");
+          v.status = Math.random() > 0.08 ? "online" : "offline";
+          v.odometer = Number(v.odometer || 0) + Number((Math.random() * 0.2).toFixed(2));
+          v.updatedAt = new Date().toISOString();
+
+          addRoutePoint(v);
         }
 
         return v;
       });
 
       saveData(data);
-      renderVehicles();
+      renderDashboard();
     }
 
     function rastrearMeuCelular() {
@@ -937,7 +1496,11 @@
         return;
       }
 
-      alert("Permita o acesso à localização do celular para iniciar o rastreamento.");
+      alert("Permita o acesso à localização do celular. O sistema salvará pontos de rota a cada 5 segundos enquanto estiver aberto.");
+
+      if (routeTimer !== null) {
+        clearInterval(routeTimer);
+      }
 
       watchId = navigator.geolocation.watchPosition(
         function(position) {
@@ -956,36 +1519,78 @@
             plateName = "CELULAR-" + currentUser.username.toUpperCase();
           }
 
-          let meuVeiculo = data.vehicles.find(v =>
+          let vehicle = data.vehicles.find(v =>
             v.plate === plateName &&
             (currentUser.role === "admin" || v.ownerId === currentUser.id)
           );
 
-          if (!meuVeiculo) {
-            meuVeiculo = {
+          if (!vehicle) {
+            vehicle = {
               id: Date.now(),
               ownerId: currentUser.role === "admin" ? null : currentUser.id,
               plate: plateName,
               model: "Celular em teste",
+              year: "",
+              color: "",
+              chassis: "",
+              renavam: "",
               imei: "GPS-CELULAR",
+              chip: "",
+              carrier: "",
               lat,
               lng,
               speed,
               status: "online",
-              updatedAt: new Date().toLocaleString("pt-BR")
+              trackerStatus: "ativo",
+              odometer: 0,
+              notes: "Rastreamento de teste pelo navegador",
+              updatedAt: new Date().toISOString()
             };
 
-            data.vehicles.push(meuVeiculo);
+            data.vehicles.push(vehicle);
           } else {
-            meuVeiculo.lat = lat;
-            meuVeiculo.lng = lng;
-            meuVeiculo.speed = speed;
-            meuVeiculo.status = "online";
-            meuVeiculo.updatedAt = new Date().toLocaleString("pt-BR");
+            vehicle.lat = lat;
+            vehicle.lng = lng;
+            vehicle.speed = speed;
+            vehicle.status = "online";
+            vehicle.updatedAt = new Date().toISOString();
           }
+
+          data.routes.push({
+            id: Date.now() + Math.random(),
+            vehicleId: vehicle.id,
+            lat,
+            lng,
+            speed,
+            timestamp: new Date().toISOString()
+          });
 
           saveData(data);
           renderDashboard();
+
+          if (routeTimer === null) {
+            routeTimer = setInterval(() => {
+              const updatedData = getData();
+
+              const updatedVehicle = updatedData.vehicles.find(v =>
+                v.plate === plateName &&
+                (currentUser.role === "admin" || v.ownerId === currentUser.id)
+              );
+
+              if (updatedVehicle) {
+                updatedData.routes.push({
+                  id: Date.now() + Math.random(),
+                  vehicleId: updatedVehicle.id,
+                  lat: updatedVehicle.lat,
+                  lng: updatedVehicle.lng,
+                  speed: updatedVehicle.speed || 0,
+                  timestamp: new Date().toISOString()
+                });
+
+                saveData(updatedData);
+              }
+            }, 5000);
+          }
         },
 
         function(error) {
@@ -1018,27 +1623,546 @@
       if (watchId !== null) {
         navigator.geolocation.clearWatch(watchId);
         watchId = null;
-        alert("Rastreamento do celular parado.");
-      } else {
-        alert("Nenhum rastreamento ativo no momento.");
       }
+
+      if (routeTimer !== null) {
+        clearInterval(routeTimer);
+        routeTimer = null;
+      }
+
+      alert("Rastreamento do celular parado.");
     }
 
-    function limparTeste() {
-      if (!confirm("Limpar veículos de teste do celular?")) return;
+    function renderFuel() {
+      const data = getData();
+      const vehicles = getAccessibleVehicles();
+      const vehicleIds = vehicles.map(v => v.id);
+
+      const records = data.fuelRecords
+        .filter(f => vehicleIds.includes(Number(f.vehicleId)))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const totalCost = records.reduce((sum, f) => sum + Number(f.total || 0), 0);
+      const totalLiters = records.reduce((sum, f) => sum + Number(f.liters || 0), 0);
+      const avgPrice = totalLiters ? totalCost / totalLiters : 0;
+
+      const dashboard = document.getElementById("dashboard");
+
+      dashboard.innerHTML = `
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Controle de Abastecimento</h1>
+            <span class="muted">Litros, valores, KM, consumo médio e custo por km</span>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card metric">
+            <span class="pill">💰 Total gasto</span>
+            <h1>${money(totalCost)}</h1>
+            <p class="muted">Combustível registrado</p>
+          </div>
+
+          <div class="card metric">
+            <span class="pill">⛽ Litros</span>
+            <h1>${formatNumber(totalLiters)}</h1>
+            <p class="muted">Litros abastecidos</p>
+          </div>
+
+          <div class="card metric">
+            <span class="pill">📊 Média R$/L</span>
+            <h1>${money(avgPrice)}</h1>
+            <p class="muted">Preço médio por litro</p>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Novo Abastecimento</h3>
+
+            <label>Veículo</label>
+            <select id="fuelVehicle">
+              <option value="">Selecione</option>
+              ${vehicles.map(v => `<option value="${v.id}">${v.plate} - ${v.model}</option>`).join("")}
+            </select>
+
+            <div class="inline-row">
+              <div>
+                <label>Data e Hora</label>
+                <input id="fuelDate" type="datetime-local">
+              </div>
+
+              <div>
+                <label>Posto</label>
+                <input id="fuelStation" placeholder="Nome do posto">
+              </div>
+            </div>
+
+            <div class="inline-row">
+              <div>
+                <label>Combustível</label>
+                <select id="fuelType">
+                  <option value="Gasolina">Gasolina</option>
+                  <option value="Etanol">Etanol</option>
+                  <option value="Diesel">Diesel</option>
+                  <option value="Diesel S10">Diesel S10</option>
+                  <option value="GNV">GNV</option>
+                </select>
+              </div>
+
+              <div>
+                <label>KM Atual</label>
+                <input id="fuelKm" type="number" placeholder="Ex: 128550">
+              </div>
+            </div>
+
+            <div class="inline-row">
+              <div>
+                <label>Litros</label>
+                <input id="fuelLiters" type="number" step="0.01" placeholder="Ex: 52.4">
+              </div>
+
+              <div>
+                <label>Valor por Litro</label>
+                <input id="fuelPrice" type="number" step="0.01" placeholder="Ex: 6.29">
+              </div>
+            </div>
+
+            <label>Observação</label>
+            <textarea id="fuelNote" placeholder="Observações do abastecimento"></textarea>
+
+            <button class="btn-primary full" onclick="createFuelRecord()">Salvar Abastecimento</button>
+          </div>
+
+          <div class="card">
+            <h3>Histórico de Abastecimentos</h3>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Veículo</th>
+                    <th>Litros</th>
+                    <th>R$/L</th>
+                    <th>Total</th>
+                    <th>KM</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  ${records.map(f => {
+                    const vehicle = data.vehicles.find(v => v.id === Number(f.vehicleId));
+
+                    return `
+                      <tr>
+                        <td>${new Date(f.date).toLocaleString("pt-BR")}</td>
+                        <td>${vehicle ? `${vehicle.plate} - ${vehicle.model}` : "Veículo removido"}</td>
+                        <td>${formatNumber(f.liters)} L</td>
+                        <td>${money(f.pricePerLiter)}</td>
+                        <td>${money(f.total)}</td>
+                        <td>${Number(f.km || 0).toLocaleString("pt-BR")}</td>
+                        <td>
+                          <button class="btn-danger btn-small" onclick="deleteFuelRecord(${f.id})">Excluir</button>
+                        </td>
+                      </tr>
+                    `;
+                  }).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById("fuelDate").value = now.toISOString().slice(0,16);
+    }
+
+    function createFuelRecord() {
+      const vehicleId = Number(document.getElementById("fuelVehicle").value);
+      const date = document.getElementById("fuelDate").value;
+      const station = document.getElementById("fuelStation").value.trim();
+      const type = document.getElementById("fuelType").value;
+      const km = Number(document.getElementById("fuelKm").value);
+      const liters = Number(document.getElementById("fuelLiters").value);
+      const pricePerLiter = Number(document.getElementById("fuelPrice").value);
+      const note = document.getElementById("fuelNote").value.trim();
+
+      if (!vehicleId || !date || !liters || !pricePerLiter) {
+        alert("Preencha veículo, data, litros e valor por litro.");
+        return;
+      }
 
       const data = getData();
 
-      data.vehicles = data.vehicles.filter(v =>
-        !v.plate.startsWith("CELULAR-")
-      );
+      const total = liters * pricePerLiter;
+
+      data.fuelRecords.push({
+        id: Date.now(),
+        vehicleId,
+        date: new Date(date).toISOString(),
+        station,
+        type,
+        km,
+        liters,
+        pricePerLiter,
+        total,
+        note
+      });
+
+      data.vehicles = data.vehicles.map(v => {
+        if (v.id === vehicleId && km) {
+          v.odometer = km;
+        }
+
+        return v;
+      });
+
+      saveData(data);
+      renderFuel();
+    }
+
+    function deleteFuelRecord(id) {
+      if (!confirm("Excluir este abastecimento?")) return;
+
+      const data = getData();
+
+      data.fuelRecords = data.fuelRecords.filter(f => f.id !== id);
+
+      saveData(data);
+      renderFuel();
+    }
+
+    function renderMaintenance() {
+      const data = getData();
+      const vehicles = getAccessibleVehicles();
+      const vehicleIds = vehicles.map(v => v.id);
+
+      const records = data.maintenanceRecords
+        .filter(m => vehicleIds.includes(Number(m.vehicleId)))
+        .sort((a, b) => new Date(b.date) - new Date(a.date));
+
+      const dashboard = document.getElementById("dashboard");
+
+      dashboard.innerHTML = `
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Manutenção</h1>
+            <span class="muted">Controle de revisão, pneus, óleo, seguro e licenciamento</span>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="card">
+            <h3>Nova Manutenção</h3>
+
+            <label>Veículo</label>
+            <select id="maintenanceVehicle">
+              <option value="">Selecione</option>
+              ${vehicles.map(v => `<option value="${v.id}">${v.plate} - ${v.model}</option>`).join("")}
+            </select>
+
+            <label>Tipo</label>
+            <select id="maintenanceType">
+              <option value="Troca de óleo">Troca de óleo</option>
+              <option value="Revisão">Revisão</option>
+              <option value="Pneu">Pneu</option>
+              <option value="Seguro">Seguro</option>
+              <option value="Licenciamento">Licenciamento</option>
+              <option value="Outro">Outro</option>
+            </select>
+
+            <div class="inline-row">
+              <div>
+                <label>Data</label>
+                <input id="maintenanceDate" type="date">
+              </div>
+
+              <div>
+                <label>KM</label>
+                <input id="maintenanceKm" type="number" placeholder="KM atual">
+              </div>
+            </div>
+
+            <div class="inline-row">
+              <div>
+                <label>Valor</label>
+                <input id="maintenanceCost" type="number" step="0.01" placeholder="Ex: 350">
+              </div>
+
+              <div>
+                <label>Próxima revisão em KM</label>
+                <input id="maintenanceNextKm" type="number" placeholder="Ex: 135000">
+              </div>
+            </div>
+
+            <label>Observação</label>
+            <textarea id="maintenanceNote" placeholder="Descrição da manutenção"></textarea>
+
+            <button class="btn-primary full" onclick="createMaintenanceRecord()">Salvar Manutenção</button>
+          </div>
+
+          <div class="card">
+            <h3>Histórico de Manutenção</h3>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Data</th>
+                    <th>Veículo</th>
+                    <th>Tipo</th>
+                    <th>KM</th>
+                    <th>Valor</th>
+                    <th>Próximo KM</th>
+                    <th>Ação</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  ${records.map(m => {
+                    const vehicle = data.vehicles.find(v => v.id === Number(m.vehicleId));
+
+                    return `
+                      <tr>
+                        <td>${new Date(m.date).toLocaleDateString("pt-BR")}</td>
+                        <td>${vehicle ? `${vehicle.plate} - ${vehicle.model}` : "Veículo removido"}</td>
+                        <td>${m.type}</td>
+                        <td>${Number(m.km || 0).toLocaleString("pt-BR")}</td>
+                        <td>${money(m.cost)}</td>
+                        <td>${Number(m.nextKm || 0).toLocaleString("pt-BR")}</td>
+                        <td>
+                          <button class="btn-danger btn-small" onclick="deleteMaintenanceRecord(${m.id})">Excluir</button>
+                        </td>
+                      </tr>
+                    `;
+                  }).join("")}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("maintenanceDate").value = new Date().toISOString().slice(0,10);
+    }
+
+    function createMaintenanceRecord() {
+      const vehicleId = Number(document.getElementById("maintenanceVehicle").value);
+      const type = document.getElementById("maintenanceType").value;
+      const date = document.getElementById("maintenanceDate").value;
+      const km = Number(document.getElementById("maintenanceKm").value);
+      const cost = Number(document.getElementById("maintenanceCost").value);
+      const nextKm = Number(document.getElementById("maintenanceNextKm").value);
+      const note = document.getElementById("maintenanceNote").value.trim();
+
+      if (!vehicleId || !date || !type) {
+        alert("Preencha veículo, data e tipo.");
+        return;
+      }
+
+      const data = getData();
+
+      data.maintenanceRecords.push({
+        id: Date.now(),
+        vehicleId,
+        type,
+        date,
+        km,
+        cost,
+        nextKm,
+        note
+      });
+
+      saveData(data);
+      renderMaintenance();
+    }
+
+    function deleteMaintenanceRecord(id) {
+      if (!confirm("Excluir manutenção?")) return;
+
+      const data = getData();
+
+      data.maintenanceRecords = data.maintenanceRecords.filter(m => m.id !== id);
+
+      saveData(data);
+      renderMaintenance();
+    }
+
+    function renderFinance() {
+      const data = getData();
+      const dashboard = document.getElementById("dashboard");
+
+      const users = currentUser.role === "admin"
+        ? data.users.filter(u => u.role === "client")
+        : [currentUser];
+
+      dashboard.innerHTML = `
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Financeiro</h1>
+            <span class="muted">Planos, vencimentos e status do contrato</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Clientes e Planos</h3>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Plano</th>
+                  <th>Vencimento</th>
+                  <th>Status</th>
+                  <th>WhatsApp</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                ${users.map(u => `
+                  <tr>
+                    <td>${u.name}</td>
+                    <td>${u.plan || "-"}</td>
+                    <td>${u.dueDate ? new Date(u.dueDate).toLocaleDateString("pt-BR") : "-"}</td>
+                    <td>${u.contractStatus || "ativo"}</td>
+                    <td>${u.phone || "-"}</td>
+                  </tr>
+                `).join("")}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      `;
+    }
+
+    function renderReports() {
+      const data = getData();
+      const vehicles = getAccessibleVehicles();
+      const ids = vehicles.map(v => v.id);
+
+      const fuel = data.fuelRecords.filter(f => ids.includes(Number(f.vehicleId)));
+      const maintenance = data.maintenanceRecords.filter(m => ids.includes(Number(m.vehicleId)));
+      const routes = data.routes.filter(r => ids.includes(Number(r.vehicleId)));
+
+      const totalFuel = fuel.reduce((sum, f) => sum + Number(f.total || 0), 0);
+      const totalMaintenance = maintenance.reduce((sum, m) => sum + Number(m.cost || 0), 0);
+
+      const dashboard = document.getElementById("dashboard");
+
+      dashboard.innerHTML = `
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Relatórios</h1>
+            <span class="muted">Resumo operacional do sistema</span>
+          </div>
+        </div>
+
+        <div class="grid">
+          <div class="card metric">
+            <span class="pill">🚗 Veículos</span>
+            <h1>${vehicles.length}</h1>
+            <p class="muted">No acesso atual</p>
+          </div>
+
+          <div class="card metric">
+            <span class="pill">📍 Pontos de rota</span>
+            <h1>${routes.length}</h1>
+            <p class="muted">Histórico armazenado</p>
+          </div>
+
+          <div class="card metric">
+            <span class="pill">⛽ Abastecimento</span>
+            <h1>${money(totalFuel)}</h1>
+            <p class="muted">${fuel.length} lançamento(s)</p>
+          </div>
+
+          <div class="card metric">
+            <span class="pill">🔧 Manutenção</span>
+            <h1>${money(totalMaintenance)}</h1>
+            <p class="muted">${maintenance.length} lançamento(s)</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Próximas melhorias profissionais</h3>
+          <p>✅ Exportar relatório em PDF</p>
+          <p>✅ Exportar CSV/Excel</p>
+          <p>✅ Relatório de quilometragem por período</p>
+          <p>✅ Ranking de veículos que mais gastam combustível</p>
+          <p>✅ Integração com banco de dados em nuvem</p>
+        </div>
+      `;
+    }
+
+    function renderAlerts() {
+      const data = getData();
+      const vehicles = getAccessibleVehicles();
+
+      const alerts = [];
+
+      vehicles.forEach(v => {
+        if (v.status === "offline") {
+          alerts.push(`🔴 ${v.plate} está offline.`);
+        }
+
+        if (Number(v.speed || 0) > 100) {
+          alerts.push(`⚠️ ${v.plate} ultrapassou 100 km/h.`);
+        }
+      });
+
+      const dashboard = document.getElementById("dashboard");
+
+      dashboard.innerHTML = `
+        <div class="topbar">
+          <div>
+            <h1 style="margin:0">Alertas</h1>
+            <span class="muted">Ocorrências operacionais da frota</span>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Alertas Ativos</h3>
+
+          ${
+            alerts.length
+              ? alerts.map(a => `<p>${a}</p>`).join("")
+              : `<p class="muted">Nenhum alerta ativo no momento.</p>`
+          }
+        </div>
+
+        <div class="card">
+          <h3>Alertas futuros</h3>
+          <p>✅ Cerca virtual</p>
+          <p>✅ Ignição ligada/desligada</p>
+          <p>✅ Veículo parado por muito tempo</p>
+          <p>✅ Notificação por WhatsApp</p>
+        </div>
+      `;
+    }
+
+    function limparTestes() {
+      if (!confirm("Isso vai apagar celulares de teste e rotas de teste. Continuar?")) return;
+
+      const data = getData();
+
+      const testVehicleIds = data.vehicles
+        .filter(v => v.plate.startsWith("CELULAR-"))
+        .map(v => v.id);
+
+      data.vehicles = data.vehicles.filter(v => !testVehicleIds.includes(v.id));
+      data.routes = data.routes.filter(r => !testVehicleIds.includes(r.vehicleId));
 
       saveData(data);
       renderDashboard();
     }
 
     window.onload = function() {
-      const savedUser = localStorage.getItem("lsc_current_user");
+      const savedUser = localStorage.getItem("lsc_current_user_v2");
 
       if (savedUser) {
         currentUser = JSON.parse(savedUser);
